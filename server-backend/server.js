@@ -5,15 +5,22 @@ const { Server } = require('socket.io');
 const cors = require('cors');
 
 const app = express();
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "https://real-time-code-editor-gold.vercel.app/" // Replace with your Vercel URL
+];
+
 app.use(cors({
-    origin: ["http://localhost:3000", "http://localhost:5173"],
+    origin: allowedOrigins,
     credentials: true
 }));
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://localhost:5173"], // Your React app's URL
+    origin:allowedOrigins, // Your React app's URL
     methods: ["GET", "POST"],
     credentials: true
   }
