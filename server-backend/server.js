@@ -6,7 +6,7 @@ const cors = require('cors');
 
 const app = express();
 
-
+// curl "https://real-time-code-editor-nll4.onrender.com/socket.io/?EIO=4&transport=polling"
 
 app.use(cors({
   origin: [
@@ -21,17 +21,21 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-      origin: [
-          "http://localhost:3000",
-          "http://localhost:5173",
-          "https://real-time-code-editor-gold.vercel.app" // REMOVED TRAILING SLASH
-      ],
-      methods: ["GET", "POST"],
-      credentials: true
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://real-time-code-editor-gold.vercel.app"
+    ],
+    methods: ["GET", "POST"],
+    credentials: true
   },
-  path: "/socket.io", // Explicit path
-  transports: ["websocket", "polling"] // Explicit transports
+  path: "/socket.io",
+  transports: ["websocket", "polling"],
+  pingInterval: 25000,
+  pingTimeout: 20000,
+  cookie: false
 });
+
 const roomData = {};
 
 const users = [];
