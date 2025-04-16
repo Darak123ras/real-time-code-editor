@@ -9,19 +9,29 @@ const app = express();
 
 
 app.use(cors({
-    origin: ["http://localhost:3000", "http://localhost:5173","https://real-time-code-editor-gold.vercel.app/"],
-    credentials: true
+  origin: [
+      "http://localhost:3000", 
+      "http://localhost:5173",
+      "https://real-time-code-editor-gold.vercel.app" // REMOVED TRAILING SLASH
+  ],
+  credentials: true
 }));
+
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://localhost:5173","https://real-time-code-editor-gold.vercel.app/"], // Your React app's URL
-    methods: ["GET", "POST"],
-    credentials: true
-  }
+      origin: [
+          "http://localhost:3000",
+          "http://localhost:5173",
+          "https://real-time-code-editor-gold.vercel.app" // REMOVED TRAILING SLASH
+      ],
+      methods: ["GET", "POST"],
+      credentials: true
+  },
+  path: "/socket.io", // Explicit path
+  transports: ["websocket", "polling"] // Explicit transports
 });
-
 const roomData = {};
 
 const users = [];
@@ -106,8 +116,14 @@ io.on('connection', (socket) => {
   });
 });
 
+
+// Add ping intervals suitable for production
+io.engine.opts.pingInterval = 25000;
+io.engine.opts.pingTimeout = 20000;
+io.engine.opts.upgradeTimeout = 10000;
+
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
 

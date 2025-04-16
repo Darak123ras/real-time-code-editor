@@ -42,16 +42,22 @@ export const SocketProvider = ({ children }) => {
   
   useEffect(() => {
     // Use import.meta.env instead of process.env in Vite
-    const socketUrl = import.meta.env.VITE_API_URL;
+    const socketUrl = import.meta.env.VITE_API_URL || 
+                    (window.location.hostname === 'localhost' ? 
+                     'http://localhost:3001' : 
+                     'https://real-time-code-editor-nll4.onrender.com');
     
-    const socketInstance = io(socketUrl, {
-      autoConnect: false,
-      withCredentials: true,
-      reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-    });
+                     const socketInstance = io(socketUrl, {
+                      autoConnect: false,
+                      withCredentials: true,
+                      reconnection: true,
+                      reconnectionAttempts: Infinity,
+                      reconnectionDelay: 1000,
+                      reconnectionDelayMax: 5000,
+                      transports: ["websocket", "polling"],
+                      path: "/socket.io",
+                      secure: true // For HTTPS in production
+                    });
 
     setSocket(socketInstance);
 
