@@ -1,23 +1,26 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import './CodeEditor.css';
 
-const CodeEditor = ({ code, setCode, language }) => {
+const CodeEditor = ({ language = 'javascript' }) => {
+  const editorRef = useRef(null);
+
+  function handleEditorDidMount(editor) {
+    editorRef.current = editor;
+  }
+
   return (
-    <div className='container' >
-      <Editor
-        height="100%"
-        language={language.toLowerCase()} 
-        value={code}
-        theme="vs-dark"
-        onChange={setCode} 
-        options={{
-          fontSize: 14,
-          automaticLayout: true,
-          minimap: { enabled: false }
-        }}
-      />
-    </div>
+    <Editor
+      height="90vh"
+      language={language}
+      theme="vs-dark"
+      onMount={handleEditorDidMount}
+      options={{
+        fontSize: 14,
+        automaticLayout: true,
+        minimap: { enabled: false }
+      }}
+    />
   );
 };
 

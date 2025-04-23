@@ -3,7 +3,7 @@
   padding: 0;
 }
 
-.login-container, .signup-container {
+/* .login-container, .signup-container {
   max-width: 400px;
   margin: 100px auto;
   padding: 20px;
@@ -47,4 +47,10 @@
   color: #4CAF50;
   text-decoration: underline;
   cursor: pointer;
-}
+} */
+
+/* .editor-room{
+  background-color: aqua;
+  height: 100vh;
+  width: 100%;
+} */

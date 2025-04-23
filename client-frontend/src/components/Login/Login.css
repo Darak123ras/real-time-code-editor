@@ -1,0 +1,65 @@
+.login-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.login-container .container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 50vh;
+    width: 50vw;
+    background-color: rgb(158, 193, 207);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+.login-container .container h2{
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.login-container form{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    /* gap: 10px; */
+    width: fit-content;
+    height: 150px;
+
+}
+.login-container form input{
+    width: fit-content;
+    height: 30px;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+}
+.login-container form button{
+    width:100%;
+    height: 30px;
+    padding: 5px;
+    background-color: rgb(40, 113, 40);
+    color: white;
+    border: none;
+    border-radius: 5px;
+
+}
+.login-container form button:hover{
+    height: 32px;
+    background-color: rgb(255, 58, 58);
+}
+.login-container .container .signup-link span{
+    color: red;
+    cursor: pointer;
+}
+/* .login-container .container .signup-link span:hover{
+    font-size: 1.2rem;
+} */

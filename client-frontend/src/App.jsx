@@ -1,38 +1,25 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import {BrowserRouter, BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import Login from './components/Authentication/Login';
-import EditorPage from './pages/EditorPage';
-import Signup from './components/Authentication/Signup';
-import './App.css';
+import Login from './components/Login/Login';
+import EditorRoom from './components/EditorRoom/EditorRoom';
+import Home from './pages/Home';
+
 
 function App() {
   return (
-    <Router>
+      <AuthProvider>
       <SocketProvider>
-        <AuthProvider>
+        <BrowserRouter>
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route
-              path="/editor"
-              element={
-                <ProtectedRoute>
-                  <EditorPage />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/home" element={<Home />} />
+            <Route path="/room/:roomId" element={<EditorRoom />} />
           </Routes>
-        </AuthProvider>
+        </BrowserRouter>
       </SocketProvider>
-    </Router>
+    </AuthProvider>
   );
-}
-
-function ProtectedRoute({ children }) {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/" replace />;
 }
 
 export default App;
