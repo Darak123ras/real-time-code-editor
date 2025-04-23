@@ -15,24 +15,15 @@ const EditorRoom = () => {
   const [language, setLanguage] = useState('javascript');
   const [participants, setParticipants] = useState([]);
   const [hasJoinedRoom, setHasJoinedRoom] = useState(false);
-  const [connectionError, setConnectionError] = useState(null);
   
   const connectionId = useRef(Date.now().toString());
   const editorRef = useRef(null);
-  const retryTimeoutRef = useRef(null);
 
-  // Join room function with enhanced error handling
+  // Join room function
   const joinRoom = useCallback(() => {
     if (!socket || !user || !roomId || hasJoinedRoom) return;
 
-    // Clear any pending retries
-    if (retryTimeoutRef.current) {
-      clearTimeout(retryTimeoutRef.current);
-      retryTimeoutRef.current = null;
-    }
-
     console.log('Joining room:', roomId);
-    setConnectionError(null);
     
     socket.emit('join-room', { 
       roomId, 
@@ -46,31 +37,9 @@ const EditorRoom = () => {
         setLanguage(response.language);
         setParticipants(response.participants);
         setHasJoinedRoom(true);
-      } else {
-        setConnectionError(response?.error || 'Failed to join room');
-        // Retry after 3 seconds
-        retryTimeoutRef.current = setTimeout(joinRoom, 3000);
       }
     });
   }, [socket, user, roomId, hasJoinedRoom]);
-
-  // Handle mobile viewport
-  useEffect(() => {
-    const handleResize = () => {
-      // Ensure proper mobile viewport scaling
-      const metaViewport = document.querySelector('meta[name="viewport"]');
-      if (window.innerWidth <= 768) {
-        metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-      } else {
-        metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Initial call
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   // Handle code changes
   const handleCodeChange = useCallback((newCode) => {
@@ -102,7 +71,7 @@ const EditorRoom = () => {
     });
   }, [socket, roomId, navigate, hasJoinedRoom]);
 
-  // Main socket effect with connection monitoring
+  // Main socket effect
   useEffect(() => {
     if (!socket) return;
 
@@ -110,10 +79,6 @@ const EditorRoom = () => {
       if (isConnected) {
         joinRoom();
       }
-    };
-
-    const onDisconnect = () => {
-      setHasJoinedRoom(false);
     };
 
     const handleCodeUpdate = (newCode, senderId) => {
@@ -127,7 +92,6 @@ const EditorRoom = () => {
     };
 
     socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
     socket.on('code-update', handleCodeUpdate);
     socket.on('participants-update', handleParticipantsUpdate);
     socket.on('language-change', setLanguage);
@@ -139,14 +103,9 @@ const EditorRoom = () => {
 
     return () => {
       socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
       socket.off('code-update', handleCodeUpdate);
       socket.off('participants-update', handleParticipantsUpdate);
       socket.off('language-change', setLanguage);
-      
-      if (retryTimeoutRef.current) {
-        clearTimeout(retryTimeoutRef.current);
-      }
       
       if (hasJoinedRoom) {
         socket.emit('leave-room', { 
@@ -156,28 +115,6 @@ const EditorRoom = () => {
       }
     };
   }, [socket, isConnected, joinRoom, roomId, hasJoinedRoom]);
-  // Render loading or error state
-  if (!isConnected || !hasJoinedRoom) {
-    return (
-      <div className="connection-status">
-        <p>Connecting to room {roomId}...</p>
-        {connectionError && (
-          <>
-            <p className="error">{connectionError}</p>
-            <p>Retrying...</p>
-          </>
-        )}
-        <div className="connection-tips">
-          <h4>Mobile Connection Tips:</h4>
-          <ul>
-            <li>Ensure you have stable internet connection</li>
-            <li>Try switching between WiFi and mobile data</li>
-            <li>Refresh the page if stuck for more than 10 seconds</li>
-          </ul>
-        </div>
-      </div>
-    );
-  }
 
   // Render participants
   const renderParticipants = () => {

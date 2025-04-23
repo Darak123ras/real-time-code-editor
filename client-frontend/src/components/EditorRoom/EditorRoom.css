@@ -81,14 +81,17 @@
 @media (max-width: 768px) {
   .editor-room {
     padding: 10px;
+    /* height: 100vh; */
   }
 
   .room-header {
     flex-direction: column;
+    height:250px ;
+    margin: 15px;
   }
 
   .participants {
-    max-height: 500px;
+    max-height: 100px;
     overflow-y: auto;
   }
 
