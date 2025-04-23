@@ -28,6 +28,16 @@ const rooms = {};
 io.on('connection', (socket) => {
   console.log('New connection:', socket.id);
 
+  // Detect mobile user agents
+  const isMobile = socket.handshake.headers['user-agent'].match(
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i
+  );
+
+  // Adjust ping intervals for mobile
+  socket.mobile = isMobile;
+  socket.pingInterval = isMobile ? 25000 : 10000;
+  socket.pingTimeout = isMobile ? 30000 : 15000;
+
   // Join room handler
   socket.on('join-room', ({ roomId, username, connectionId }, callback) => {
     try {
@@ -50,6 +60,17 @@ io.on('connection', (socket) => {
       const existingIndex = room.participants.findIndex(
         p => p.connectionId === connectionId
       );
+
+       // Add mobile flag to participant
+       const participant = {
+        id: socket.id,
+        connectionId,
+        username,
+        isMobile,
+        joinedAt: new Date(),
+        lastActive: new Date(),
+        isActive: true
+      };
 
       if (existingIndex >= 0) {
         // Update existing participant
