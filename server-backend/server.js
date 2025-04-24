@@ -8,13 +8,22 @@ app.use(cors());
 app.use(express.json());
 
 const server = http.createServer(app);
+
+// Add this before your routes
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 const io = new Server(server, {
   cors: {
-    origin:[ 
-      "http://localhost:5173",
-      "https://real-time-code-editor-gold.vercel.app/",
-      "https://real-time-code-editor-nll4.onrender.com"
-    ],
+    origin: "*",
+    // [ 
+    //   "http://localhost:5173",
+    //   "https://real-time-code-editor-gold.vercel.app/",
+    //   "https://real-time-code-editor-nll4.onrender.com"
+    // ],
     methods: ["GET", "POST"],
     credentials: true
   },
@@ -22,7 +31,7 @@ const io = new Server(server, {
     maxDisconnectionDuration: 5 * 60 * 1000, // 5 minutes
     skipMiddlewares: true
   },
-  transports: ['websocket'],
+  // transports: ['websocket'],
   pingInterval: 25000,
   pingTimeout: 20000
 });

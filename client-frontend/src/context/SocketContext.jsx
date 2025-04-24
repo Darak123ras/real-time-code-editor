@@ -17,6 +17,15 @@ export const SocketProvider = ({ children }) => {
       autoConnect: true
     });
 
+    socketInstance.on('connect_error', (err) => {
+      console.error('Connection error:', err);
+    });
+  
+    socketInstance.on('error', (err) => {
+      console.error('Socket error:', err);
+    });
+  
+
     const onConnect = () => {
       setIsConnected(true);
       console.log('Socket connected:', socketInstance.id);
