@@ -12,10 +12,11 @@ const io = new Server(server, {
   cors: {
     origin:[ 
       "http://localhost:5173",
-      "https://real-time-code-editor-gold.vercel.app/"
+      "https://real-time-code-editor-gold.vercel.app/",
+      "https://real-time-code-editor-nll4.onrender.com"
     ],
     methods: ["GET", "POST"],
-    redentials: true
+    credentials: true
   },
   connectionStateRecovery: {
     maxDisconnectionDuration: 5 * 60 * 1000, // 5 minutes
