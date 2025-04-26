@@ -18,12 +18,11 @@ app.use((req, res, next) => {
 });
 const io = new Server(server, {
   cors: {
-    origin: "*",
-    // [ 
-    //   "http://localhost:5173",
-    //   "https://real-time-code-editor-gold.vercel.app/",
-    //   "https://real-time-code-editor-nll4.onrender.com"
-    // ],
+    origin:[ 
+      "http://localhost:5173",
+      "https://real-time-code-editor-gold.vercel.app/",
+      "https://real-time-code-editor-backend-hwcq.onrender.com"
+    ],
     methods: ["GET", "POST"],
     credentials: true
   },
