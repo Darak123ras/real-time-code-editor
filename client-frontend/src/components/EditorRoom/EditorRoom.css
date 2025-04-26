@@ -3,6 +3,10 @@
   height: 100vh;
   font-family: 'Courier New', Courier, monospace;
   font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(185, 239, 162);
   
 }
 
