@@ -8,10 +8,11 @@ export const SocketProvider = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const socketInstance = io(import.meta.env.VITE_API_URL || 'http://localhost:3001', {
+    const socketInstance = io("https://real-time-code-editor-backend-hwcq.onrender.com" || 'http://localhost:3001', {
       reconnection: true,
-      reconnectionAttempts: 5,
+      reconnectionAttempts: Infinity,
       reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
       transports: ['websocket'],
       withCredentials: true,
       autoConnect: true
