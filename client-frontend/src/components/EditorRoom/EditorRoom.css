@@ -1,4 +1,12 @@
-/* EditorRoom.css */
+.connection-status{
+  width: 100%;
+  height: 100vh;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 25px;
+  
+}
+
+
 .editor-room {
   padding: 0;
   /* margin: 0; */

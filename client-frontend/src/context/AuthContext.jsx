@@ -5,7 +5,6 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   
-  // Just store username, no password
   const login = (username) => {
     setUser({ username });
   };
